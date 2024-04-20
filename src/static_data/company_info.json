@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "data": {
+    "BBY": "ABC US Equity",
+    "RIC": "ABC.X",
+    "company_name": "ABC GROUP PLC",
+    "currency": "GBp",
+    "datetime": 1694064659,
+    "figi": "HKHKHKMBJTGUDF",
+    "gics1": "Utilities",
+    "gics2": "Water Utilities",
+    "gics3": "Utilities",
+    "gics4": "Water Utilities",
+    "isin": "HBGTT6565",
+    "market_cap_usd": 76455527729,
+    "sedol1": "HHYYTT"
+  }
+}
