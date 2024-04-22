@@ -3,13 +3,19 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import React from "react";
-import { Provider } from "@/providers/providers";
+import { Providers } from "@/providers/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Frontend Test",
   description: "Frontend Test for Alpha Sherpa",
+  icons: [
+    {
+      url: "/favicon.ico",
+      rel: "icon",
+    },
+  ],
 };
 
 
@@ -23,9 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Provider>
+        <Providers>
           {children}
-        </Provider>
+        </Providers>
       </body>
     </html>
   );

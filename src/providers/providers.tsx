@@ -3,10 +3,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { ThemeProvider as NextThemesProvider, ThemeProvider } from "next-themes"
+import { DelayContextProvider } from "@/contexts/delayContext";
 
 
 
-export function Provider(props: { children: React.ReactNode }) {
+export function Providers(props: { children: React.ReactNode }) {
     const [queryClient] = useState(() => new QueryClient());
     return (
         <QueryClientProvider client={queryClient}>
@@ -16,7 +17,9 @@ export function Provider(props: { children: React.ReactNode }) {
                 enableSystem
                 disableTransitionOnChange
             >
-                {props.children}
+                <DelayContextProvider>
+                    {props.children}
+                </DelayContextProvider>
             </NextThemesProvider>
         </QueryClientProvider>
     )

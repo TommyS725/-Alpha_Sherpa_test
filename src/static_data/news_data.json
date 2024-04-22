@@ -1,6 +1,6 @@
 [
   {
-    "Prediction": "Tue Apr 02 2024 08:47:13 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 08:47:13 GMT+0800 (China Standard Time)",
     "Bloomberg": "ABC US Equity",
     "Side": "no action",
     "News Type": {
@@ -13,7 +13,7 @@
     "UID": "gs_2889539a-6b27-4825-bd0c-63c9111cee42"
   },
   {
-    "Prediction": "Tue Apr 02 2024 08:10:56 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 08:10:56 GMT+0800 (China Standard Time)",
     "Bloomberg": "ABC US Equity",
     "Side": "short",
     "News Type": {
@@ -25,7 +25,7 @@
     "UID": "jefferies_8e18346a-0cfc-42e0-8964-76536e4b1075"
   },
   {
-    "Prediction": "Tue Apr 02 2024 07:31:53 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 07:31:53 GMT+0800 (China Standard Time)",
     "Bloomberg": "ABC US Equity",
     "Side": "no action",
     "News Type": {
@@ -37,7 +37,7 @@
     "UID": "ms_8785ff84-eb83-11ee-973e-a412ce2a9588"
   },
   {
-    "Prediction": "Tue Apr 02 2024 07:16:19 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 07:16:19 GMT+0800 (China Standard Time)",
     "Bloomberg": "ABC US Equity",
     "Side": "short",
     "News Type": {
@@ -49,7 +49,7 @@
     "UID": "jefferies_8561ca0a-8677-4d88-98a1-9a7e53a0dc91"
   },
   {
-    "Prediction": "Tue Apr 02 2024 07:16:12 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 07:16:12 GMT+0800 (China Standard Time)",
     "Bloomberg": "ABC US Equity",
     "Side": "long",
     "News Type": {
@@ -61,7 +61,7 @@
     "UID": "jefferies_6f993624-7492-4174-a959-f4ba83f82867"
   },
   {
-    "Prediction": "Tue Apr 02 2024 07:16:06 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 07:16:06 GMT+0800 (China Standard Time)",
     "Bloomberg": "TMI LN Equity",
     "Side": "no action",
     "News Type": {
@@ -73,7 +73,7 @@
     "UID": "jefferies_d4fa8bd1-0ef3-45c7-9761-36a4e1ea1b1f"
   },
   {
-    "Prediction": "Tue Apr 02 2024 07:15:54 GMT+0800 (China Standard Time)",
+    "Prediction": "Wed Jun 07 2023 07:15:54 GMT+0800 (China Standard Time)",
     "Bloomberg": "KI GR Equity",
     "Side": "short",
     "News Type": {
