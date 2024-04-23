@@ -2,21 +2,24 @@ import { market2CandleStickData } from "@/lib/market2CandleStickData"
 import { MarketData } from "@/model/marketData"
 import { IChartApi, createChart } from "lightweight-charts"
 import { useTheme } from "next-themes"
-import {  useEffect, useMemo, useRef, useState } from "react"
-import Tooltip ,{Props as TooltipProps} from "./tooltip"
+import { useEffect, useMemo, useRef, useState } from "react"
+import Tooltip, { Props as TooltipProps } from "./tooltip"
 import Lengend from "./lengend"
 import { CandleStickData } from "@/model/candleData"
 import { NewsData } from "@/model/news"
 import { dateLike2ChartTime } from "@/lib/dateLike2ChartTime"
 import { LoaderCircle } from "lucide-react"
+import { capitalizeFirstLetter } from "@/lib/utils"
+import NewsFilter from "./newsfilter"
 
 
 
 
 type Props = {
     companyName?: string
+    BBY?: string
     marketData?: MarketData
-    newsData?:NewsData
+    newsData?: NewsData
     isFetching?: boolean
 }
 
@@ -27,12 +30,12 @@ type TooltipCoordinates = TooltipProps["coordinates"]
 
 
 
-const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetching }) => {
-    const stickData = useMemo(() => marketData&&market2CandleStickData(marketData), [marketData])
-    const metadata = useMemo(() => marketData?{
-        ric:marketData.RIC_used,
-        fx_rate:marketData.fx_rate
-    }:null, [marketData])
+const MarketChart: React.FC<Props> = ({ marketData, companyName, newsData, isFetching, BBY }) => {
+    const stickData = useMemo(() => marketData && market2CandleStickData(marketData), [marketData])
+    const metadata = useMemo(() => marketData ? {
+        ric: marketData.RIC_used,
+        fx_rate: marketData.fx_rate
+    } : null, [marketData])
     const [hoveredData, setHoveredData] = useState<CandleStickData | null>(null)
     //tooltip
     const [tooltipPosition, setTooltipPosition] = useState<TooltipCoordinates>({ top: 0, left: 0 })
@@ -42,11 +45,23 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
     const { resolvedTheme } = useTheme()
     const textColor = resolvedTheme === "dark" ? "#fff" : "#000"
 
+    //controll by news filter
+    const [newsToDisplay, setNewsToDisplay] = useState<NewsData>([])
 
+
+    const markersColor = useMemo(() => resolvedTheme === "dark" ? {
+        long: '#3ee554',
+        short: '#fb6c13',
+        'no action': '#e6ed21'
+    } : {
+        long: '#02ca16',
+        short: '#db4437',
+        'no action': '#ffb900'
+    }, [resolvedTheme])
 
 
     useEffect(() => {
-        if (!containerRef.current ) {
+        if (!containerRef.current) {
             return
         }
 
@@ -72,7 +87,7 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
 
         //candlestick series
         const candlestickSeries = chart.addCandlestickSeries({ upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350' });
-        
+
         //volume series
         const volumeSeries = chart.addHistogramSeries({
             priceFormat: {
@@ -81,7 +96,7 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
             priceScaleId: '', // set as an overlay by setting a blank priceScaleId
         });
         //set data
-        if(stickData){
+        if (stickData) {
             candlestickSeries.setData(stickData)
             volumeSeries.setData(stickData.map((item) => ({
                 time: item.time,
@@ -91,18 +106,18 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
         }
 
         //candle stick markers
-        if(newsData){
-            candlestickSeries.setMarkers(newsData.map(item=>{
+        if (newsToDisplay.length > 0) {
+            candlestickSeries.setMarkers(newsToDisplay.map(item => {
                 const time = dateLike2ChartTime(item.Prediction)
-                const shape = item.Side === 'long' ? 'arrowUp' :item.Side === 'short' ? 'arrowDown' : 'circle'
-                const color = item.Side === 'long' ? '#26a69a' :item.Side === 'short' ? '#ef5350' : '#e91e63'
+                const shape = item.Side === 'long' ? 'arrowUp' : item.Side === 'short' ? 'arrowDown' : 'circle'
+                // const color = item.Side === 'long' ? '#3ee554' :item.Side === 'short' ? '#fb6c13' : '#e6ed21'
                 const position = item.Side === 'long' ? 'belowBar' : 'aboveBar'
                 return {
                     time,
                     position,
-                    color,
+                    color: markersColor[item.Side],
                     shape: shape,
-                    text: item.Side,
+                    text: item.Side.split(' ').map(capitalizeFirstLetter).join(' '),
                 }
             }))
 
@@ -114,34 +129,34 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
             // set the positioning of the candlestick series
             scaleMargins: {
                 top: 0.1,
-                bottom: 0.3, 
+                bottom: 0.3,
             },
         });
         volumeSeries.priceScale().applyOptions({
             // set the positioning of the volume series
             scaleMargins: {
-                top: 0.7, 
+                top: 0.7,
                 bottom: 0,
             },
         });
-        
+
         chart.applyOptions({
-            rightPriceScale:{
-               scaleMargins:{
-                     top:0.3,
-                     bottom:0.3
-               }
+            rightPriceScale: {
+                scaleMargins: {
+                    top: 0.3,
+                    bottom: 0.3
+                }
             },
-            grid:{
-                vertLines:{
+            grid: {
+                vertLines: {
                     color: "rgba(197, 203, 206, 0.4)"
                 },
-                horzLines:{
+                horzLines: {
                     color: "rgba(197, 203, 206, 0.4)"
                 }
             }
         });
-        
+
 
         chart.subscribeCrosshairMove(param => {
             if (
@@ -157,7 +172,7 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
             }
             // console.log(param.seriesData)
             const candleData = param.seriesData.get(candlestickSeries) as CandleStickData
-            const volumeData = param.seriesData.get(volumeSeries) as {value:number}
+            const volumeData = param.seriesData.get(volumeSeries) as { value: number }
             const toolTipWidth = tooltipRef.current?.clientWidth || 0;
             const toolTipHeight = tooltipRef.current?.clientHeight || 0;
             //distance from the cursor to the tooltip
@@ -174,7 +189,7 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
                 top = y - toolTipHeight - toolTipMargin;
             }
             setHoveredData({
-                ...candleData, 
+                ...candleData,
                 volume: volumeData.value
             })
             setTooltipPosition({ top, left })
@@ -185,28 +200,35 @@ const MarketChart: React.FC<Props> = ({ marketData,companyName,newsData,isFetchi
             chart.remove()
         }
 
-    }, [ stickData,textColor,newsData])
+    }, [stickData, textColor, newsToDisplay, markersColor])
 
 
 
-   if(isFetching){
-         return <div className=" w-full flex justify-center items-center">
-            <LoaderCircle className="animate-spin size-[10vh]"/> 
-         </div>
+    if (isFetching) {
+        return <div className=" w-full flex justify-center items-center">
+            <LoaderCircle className="animate-spin size-[10vh]" />
+        </div>
     }
 
 
     return (
         <div className=" w-full">
-            {/* <p>{hoveredData ? "Show tooltip" : "no show"}</p> */}
-
+            {/* <p>{showUnmatchedNews ? "Show tooltip" : "no show"}</p> */}
+            {/* <pre>
+                {JSON.stringify({hasMarket:!!marketData}, null, 2)}
+            </pre> */}
+            <NewsFilter
+                BBY={BBY}
+                newsData={newsData}
+                setNewsDataToDisplay={setNewsToDisplay}
+            />
             <div
                 className="w-full h-[60vh] relative  "
                 ref={containerRef}
             >
-                <Lengend 
-                companyName={companyName} data={hoveredData} 
-                metadata={metadata}
+                <Lengend
+                    companyName={companyName} data={hoveredData}
+                    metadata={metadata}
                 />
                 <Tooltip
                     ref={tooltipRef}

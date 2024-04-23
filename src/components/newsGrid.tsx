@@ -7,6 +7,7 @@ import React, { useMemo, useState } from 'react';
 import { ColDef } from 'ag-grid-community'; // Import the 'ColDef' type from 'ag-grid-community' package
 import { useTheme } from 'next-themes';
 import { capitalizeFirstLetter } from '@/lib/utils';
+import { string } from 'zod';
 
 
 
@@ -20,19 +21,19 @@ const NewsTypeCol: React.FC<{ news: NewsEntry, isDark: boolean }> = ({ news, isD
 
     return (<div className='flex overflow-auto items-center mt-1 space-x-3 '>
         {Object.entries(news['News Type'])
-        .filter(([newsType, value])=>value!==undefined)
-        .map(([newsType, value]) => {
-            const key = `${news.UID}-${newsType}-${value}`
-            return (
-                <div key={key} 
-                className="flex space-x-3 text-sm p-1 px-2   rounded-lg bg-gray-200 dark:bg-neutral-900"
-                >
-                    <p className="text-gray-400">{newsType}</p>
-                    <p className=" font-bold">{value!.toString()}</p>
-                </div>
-            )
+            .filter(([newsType, value]) => value !== undefined)
+            .map(([newsType, value]) => {
+                const key = `${news.UID}-${newsType}-${value}`
+                return (
+                    <div key={key}
+                        className="flex space-x-3 text-sm p-1 px-2   rounded-lg bg-gray-200 dark:bg-neutral-900"
+                    >
+                        <p className="text-gray-400">{newsType}</p>
+                        <p className=" font-bold">{value!.toString()}</p>
+                    </div>
+                )
 
-        })}
+            })}
     </div>)
 }
 
@@ -54,21 +55,23 @@ const NewsGrid: React.FC<Props> = ({ data, isFetching }) => {
         return [
             {
                 headerName: "Prediction", field: "Prediction",
-                cellRenderer: (props: { data: NewsEntry }) => new Date(props.data.Prediction).toLocaleString()
+                valueFormatter: (params:{value:string})=> new Date(params.value).toLocaleString()
+                // cellRenderer: (props: { data: NewsEntry }) => new Date(props.data.Prediction).toLocaleString()
             },
             { headerName: "Bloomberg", field: "Bloomberg" },
-            { headerName: "Side", field: "Side",
-            cellRenderer: (props: { data: NewsEntry })=>
-            <p className=' font-bold'>{props.data.Side.split(' ').map(capitalizeFirstLetter).join(' ')}</p>
+            {
+                headerName: "Side", field: "Side",
+                valueFormatter: (params:{value:string})=> params.value.split(' ').map(capitalizeFirstLetter).join(' ')
 
-             },
+            },
             {
                 headerName: "News Type", field: "News Type",
+                valueFormatter: (params:{value:NewsEntry['News Type']})=> Object.keys(params.value).length,
                 cellRenderer: (props: { data: NewsEntry }) => <NewsTypeCol news={props.data} isDark={isDark} />
             },
-            { headerName: "Headline", field: "Headline",
-                cellRenderer: (props: { data: NewsEntry })=><p>{props.data.Headline}</p>
-             },
+            {
+                headerName: "Headline", field: "Headline",
+            },
             { headerName: "Primary Reporter", field: "Primary Reporter" },
             { headerName: "Exchange Region", field: "Exchange Region" },
             { headerName: "UID", field: "UID" },

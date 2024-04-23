@@ -19,7 +19,6 @@ import { useDelayContext } from "@/contexts/delayContext"
 import { useState } from "react"
 import { Delay, Delays, randomDelay } from "@/model/delay"
 import { Label } from "./ui/label"
-import { Input } from "./ui/input"
 
 
 type Props = {
@@ -65,6 +64,11 @@ const DelaySetting: React.FC<Props> = ({ refetchAll }) => {
         setUnconfirmedDelay(value)
     }
 
+    const canDefault = 
+    unconfirmedDelay.newsDelay !== defaultValues.newsDelay
+    || unconfirmedDelay.marketDataDelay !== defaultValues.marketDataDelay
+    || unconfirmedDelay.companyInfoDelay !== defaultValues.companyInfoDelay
+
     const setDefault = () => {
         setUnconfirmedDelay(defaultValues)
     }
@@ -93,13 +97,13 @@ const DelaySetting: React.FC<Props> = ({ refetchAll }) => {
 
     return <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-            <Button variant="outline">Delay Settings</Button>
+            <Button variant="outline">Network Delay Settings</Button>
         </SheetTrigger>
         <SheetContent>
             <SheetHeader>
                 <SheetTitle>Delay Settings{canSave && ' (unsaved changes)'}</SheetTitle>
                 <SheetDescription>
-                    Set the delay for simulated async requests
+                    Set the network delay for simulated async requests
                 </SheetDescription>
             </SheetHeader>
             <div className="grid gap-4 py-4">
@@ -134,7 +138,8 @@ const DelaySetting: React.FC<Props> = ({ refetchAll }) => {
                 <div className=" flex justify-end gap-8">
 
                     <Button onClick={allRandom} variant='link'> All Random </Button>
-                    <Button onClick={setDefault} variant='link' > Default </Button>
+                    <Button onClick={setDefault} disabled={!canDefault}
+                     variant='link' > Default </Button>
                 </div>
                 <div className=" flex justify-end">
                     <Button onClick={handleSaveAndRefetch} variant='default'
