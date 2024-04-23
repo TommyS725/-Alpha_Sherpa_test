@@ -37,7 +37,7 @@ News filtering by BBY & compnay name display | `company_info`
 News tabulation                              | `news_data`
 
 #### Market Data Chart
-To visualise the market data, the OHLC data is displayed as candlesticks, and the volumes are shown as histograms. Markers are added on the chart to display the 'side' signals carried by the news. As to provide higher controllability, news signals can be toggled by selecting news brokers to display. 
+To visualise the market data, the OHLC data is displayed as candlesticks, and the volumes are shown as histograms. Markers are added on the chart to display the 'side' signals carried by the news. When hovering over a specific data entry, the corrisponding OHLC data will be shown as legend and tooltip. As to provide higher controllability, news signals can be toggled by selecting news brokers to display. 
 
 ![market data chart](/docs/images/market_chart.png)
 
@@ -57,8 +57,8 @@ News data is visualised in a tabular format using [ag grid](https://www.ag-grid.
 #### Network Delay Setting
 As to simulate the delays caused by api calls. The simulated delays of the three data can be controlled in a sheet component respectively. Additionally, the loading status of the data can be chekced on the top of webpage.
 
-*Delay Settings*           |  *Data Status*
-:-------------------------:|:-------------------------:
+   *Delay Settings*                              |  *Data Status*
+:-----------------------------------------------:|:-------------------------:
 ![delay setting](/docs/images/delay_setting.png) |  ![data status](/docs/images/data_status.png)
 
 
