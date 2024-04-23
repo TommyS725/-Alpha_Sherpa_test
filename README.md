@@ -1,6 +1,6 @@
 # Alpha Sherpa Front End Developer Intern Test
 #### Tommy Shum Ching Chit 
- [Email](mailto:ching.chit@gmail.com) [GitHub](https://github.com/TommyS725) [Linkedin](www.linkedin.com/in/tommy-s-3949b1277)
+ [Email](mailto:ching.chit@gmail.com) [GitHub](https://github.com/TommyS725) [Linkedin](https://www.linkedin.com/in/tommy-s-3949b1277)
 
  ## Overview
  This project is a NextJs powered data visualisation webpage following the specification stated in [this document](./docs/Intern%20Test.docx). This project visualises three types of data, namely 'Company Information', 'Market Data' and 'News' in chart and tabular format. To simulate delayed network requests, controllable delay simulation is added as additonal feature.
